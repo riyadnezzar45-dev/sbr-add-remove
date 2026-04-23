@@ -98,7 +98,7 @@ def get_jwt_token(uid, password):
         
         # إرسال طلب MajorLogin
         headers = {
-            "Host": "loginbp.ggpolarbear.com",
+            "Host": "loginbp.ggblueshark.com",
             "X-Unity-Version": "2018.4.11f1",
             "Accept": "*/*",
             "Authorization": "Bearer",
@@ -112,7 +112,7 @@ def get_jwt_token(uid, password):
             "Connection": "keep-alive"
         }
         
-        url = "https://loginbp.ggpolarbear.com/MajorLogin"
+        url = "https://loginbp.ggblueshark.com/MajorLogin"
         response = requests.post(url, headers=headers, data=final_payload, verify=False, timeout=10)
         
         if response.status_code == 200 and len(response.text) >= 10:
@@ -151,7 +151,7 @@ def add_friend(uid, password, friend_id):
     
     try:
         response = requests.post(
-            "https://loginbp.ggpolarbear.com/RequestAddingFriend",
+            "https://loginbp.ggblueshark.com/RequestAddingFriend",
             headers={
                 "Authorization": f"Bearer {jwt_token}",
                 "X-Unity-Version": "2018.4.11f1",
@@ -213,7 +213,7 @@ def remove_friend(uid, password, friend_id):
     
     try:
         response = requests.post(
-            "https://loginbp.ggpolarbear.com/RemoveFriend",
+            "https://loginbp.ggblueshark.com/RemoveFriend",
             headers={
                 "Authorization": f"Bearer {jwt_token}",
                 "X-Unity-Version": "2018.4.11f1",
