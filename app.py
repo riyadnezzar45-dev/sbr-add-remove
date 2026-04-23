@@ -140,7 +140,7 @@ def add_friend(uid, password, friend_id):
     jwt_token = get_jwt_token(uid, password)
     if not jwt_token:
         response_data = {
-            "error": "فشل في الحصول على JWT",
+            "error": "فشل في الحصول على ",
             "status": "error"
         }
         return jsonify(add_signature(response_data)), 401
