@@ -17,7 +17,7 @@ def add_signature(response_data):
     """إضافة التوقيع إلى الاستجابة"""
     if isinstance(response_data, dict):
         response_data["signature"] = {
-            "dev": "@RIYADBLRX,@SBR_HAMA",
+            "dev": "@SBR_HAMA",
             "team": "SBR"
         }
     return response_data
@@ -98,7 +98,7 @@ def get_jwt_token(uid, password):
         
         # إرسال طلب MajorLogin
         headers = {
-            "Host": "loginbp.ggblueshark.com",
+            "Host": "loginbp.ggpolarbear.com",
             "X-Unity-Version": "2018.4.11f1",
             "Accept": "*/*",
             "Authorization": "Bearer",
@@ -112,7 +112,7 @@ def get_jwt_token(uid, password):
             "Connection": "keep-alive"
         }
         
-        url = "https://loginbp.ggblueshark.com/MajorLogin"
+        url = "https://loginbp.ggpolarbear.com/MajorLogin"
         response = requests.post(url, headers=headers, data=final_payload, verify=False, timeout=10)
         
         if response.status_code == 200 and len(response.text) >= 10:
@@ -151,7 +151,7 @@ def add_friend(uid, password, friend_id):
     
     try:
         response = requests.post(
-            "https://loginbp.ggblueshark.com/RequestAddingFriend",
+            "https://loginbp.ggpolarbear.com/RequestAddingFrien",
             headers={
                 "Authorization": f"Bearer {jwt_token}",
                 "X-Unity-Version": "2018.4.11f1",
@@ -196,68 +196,6 @@ def add_friend(uid, password, friend_id):
         }
         return jsonify(add_signature(response_data)), 500
 
-@app.route('/remove/<uid>/<password>/<friend_id>', methods=['GET'])
-def remove_friend(uid, password, friend_id):
-    """حذف صديق"""
-    jwt_token = get_jwt_token(uid, password)
-    if not jwt_token:
-        response_data = {
-            "error": "فشل في الحصول على ",
-            "status": "error"
-        }
-        return jsonify(add_signature(response_data)), 401
-    
-    enc_id = encode_id(friend_id)
-    payload = f"08a7c4839f1e10{enc_id}1802"
-    enc_data = encrypt_data(payload)
-    
-    try:
-        response = requests.post(
-            "https://loginbp.ggblueshark.com/RemoveFriend",
-            headers={
-                "Authorization": f"Bearer {jwt_token}",
-                "X-Unity-Version": "2018.4.11f1",
-                "X-GA": "v1 1",
-                "ReleaseVersion": "OB53",
-                "Content-Type": "application/x-www-form-urlencoded",
-                "User-Agent": "Dalvik/2.1.0 (Linux; Android 9)",
-                "Connection": "Keep-Alive",
-                "Accept-Encoding": "gzip"
-            },
-            data=bytes.fromhex(enc_data),
-            timeout=10
-        )
-        
-        if response.status_code == 200:
-            response_data = {
-                "status": "success",
-                "message": "✅تم حذف اللاعب من قائمة الأصدقاء بنجاح",
-                "details": {
-                    "friend_id": friend_id,
-                    "response_code": response.status_code,
-                    "server_response": response.text
-                }
-            }
-            return jsonify(add_signature(response_data))
-        else:
-            response_data = {
-                "status": "error",
-                "message": "🛑فشل في حذف اللاعب",
-                "details": {
-                    "response_code": response.status_code,
-                    "server_response": response.text
-                }
-            }
-            return jsonify(add_signature(response_data))
-            
-    except Exception as e:
-        response_data = {
-            "status": "error",
-            "message": "🛑حدث خطأ أثناء محاولة حذف الصديق",
-            "error_details": str(e)
-        }
-        return jsonify(add_signature(response_data)), 500
-
 @app.route('/')
 def home():
     """الصفحة الرئيسية"""
@@ -274,3 +212,4 @@ def home():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9479, debug=True)
+    
